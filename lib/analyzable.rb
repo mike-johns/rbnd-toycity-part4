@@ -50,8 +50,6 @@ module Analyzable
     brand_hash
   end
 
-
-
   def count_by_name(product_array)
     name_array = []
     product_array.each { |item| name_array << item.name }
