@@ -21,6 +21,32 @@ class Udacidata
 
   def self.all
     @data_path = File.dirname(__FILE__) + "/../data/data.csv"
-    CSV.read(@data_path).map! { |item| self.new :id => item[0], :brand => item[1], :name => item[2], :price => item[3] }
+    CSV.read(@data_path).drop(1).map! { |item| self.new :id => item[0], :brand => item[1], :name => item[2], :price => item[3] }
+  end
+
+  def self.first(int = 1)
+    @data_path = File.dirname(__FILE__) + "/../data/data.csv"
+    results = CSV.read(@data_path).drop(1).first(int)
+    if int == 1
+      results.flatten!
+      self.new :id => results[0], :brand => results[1], :name => results[2], :price => results[3]
+    else
+      results.map! { |item| self.new :id => item[0], :brand => item[1], :name => item[2], :price => item[3] }
+    end
+  end
+
+  def self.last(int = 1)
+    @data_path = File.dirname(__FILE__) + "/../data/data.csv"
+    results = CSV.read(@data_path).drop(1).last(int)
+    if int == 1
+      results.flatten!
+      self.new :id => results[0], :brand => results[1], :name => results[2], :price => results[3]
+    else
+      results.map! { |item| self.new :id => item[0], :brand => item[1], :name => item[2], :price => item[3] }
+    end
+  end
+
+  def find(index)
+
   end
 end
