@@ -50,6 +50,7 @@ class Udacidata
 
   def self.find(id)
     result = read_database.drop(1).find { |i| i[0] == id.to_s}
+    raise(ProductNotFoundError, "That is not a valid ID.") if result == nil
     new_object(result)
   end
 
@@ -60,6 +61,7 @@ class Udacidata
   def self.destroy(id)
     database = read_database
     target = find(id)
+    # Note: this method meets error specs because ProductNotFoundError is raised from #find(id) above
     database.delete object_to_array(target)
     data_path = File.dirname(__FILE__) + "/../data/data.csv"
     CSV.open(data_path, "w") do |csv|
