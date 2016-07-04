@@ -35,7 +35,6 @@ module Analyzable
       final_report << "  - #{result.keys.first}: #{result.values.first}\n"
     end
 
-    print final_report
     final_report
   end
 
