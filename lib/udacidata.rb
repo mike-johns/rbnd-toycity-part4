@@ -4,11 +4,11 @@ require 'csv'
 
 class Udacidata
   def self.create(options = {})
-    # If the item exists in the database
-    # self.new(options)
-    # If the item doesn not already exist in the database
     new_item = new(options)
-    write_to_database(new_item)
+    # new_record = [new_item.id.to_s, new_item.brand, new_item.name, new_item.price.to_s]
+    # if !read_database.drop(1).find { |record| record[1..3] == new_record[1..3] }
+      write_to_database(new_item)
+    # end
     new_item
   end
 
