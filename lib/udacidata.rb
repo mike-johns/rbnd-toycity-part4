@@ -50,7 +50,8 @@ class Udacidata
     return_object_or_array(results, int)
   end
 
-  def self.find(index)
-
+  def self.find(id)
+    result = read_database.drop(1).find { |i| i[0] == id.to_s}
+    new_object(result)
   end
 end
