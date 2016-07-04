@@ -12,6 +12,10 @@ class Udacidata
     new_item
   end
 
+  def self.new_instance_wrapper(args)
+    self.new :id => args[0], :brand => args[1], :name => args[2], :price => args[3]
+  end
+
   def self.read_database
     data_path = File.dirname(__FILE__) + "/../data/data.csv"
     CSV.read(data_path)
@@ -25,30 +29,28 @@ class Udacidata
   end
 
   def self.all
-    read_database.drop(1).map! { |item| self.new :id => item[0], :brand => item[1], :name => item[2], :price => item[3] }
+    read_database.drop(1).map! { |item| self.new_instance_wrapper(item) }
   end
 
   def self.first(int = 1)
     results = read_database.drop(1).first(int)
     if int == 1
-      results.flatten!
-      self.new :id => results[0], :brand => results[1], :name => results[2], :price => results[3]
+      self.new_instance_wrapper(results.flatten!)
     else
-      results.map! { |item| self.new :id => item[0], :brand => item[1], :name => item[2], :price => item[3] }
+      results.map! { |item| self.new_instance_wrapper(item) }
     end
   end
 
   def self.last(int = 1)
     results = read_database.drop(1).last(int)
     if int == 1
-      results.flatten!
-      self.new :id => results[0], :brand => results[1], :name => results[2], :price => results[3]
+      self.new_instance_wrapper(results.flatten!)
     else
-      results.map! { |item| self.new :id => item[0], :brand => item[1], :name => item[2], :price => item[3] }
+      results.map! { |item| self.new_instance_wrapper(item) }
     end
   end
 
-  def find(index)
+  def self.find(index)
 
   end
 end
