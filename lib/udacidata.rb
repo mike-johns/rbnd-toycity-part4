@@ -18,4 +18,9 @@ class Udacidata
       csv << [product.id, product.brand, product.name, product.price]
     end
   end
+
+  def self.all
+    @data_path = File.dirname(__FILE__) + "/../data/data.csv"
+    CSV.read(@data_path).map! { |item| self.new :id => item[0], :brand => item[1], :name => item[2], :price => item[3] }
+  end
 end
