@@ -6,10 +6,7 @@ class Udacidata
   create_finder_methods :brand, :name
   def self.create(options = {})
     new_item = new(options)
-    # new_record = [new_item.id.to_s, new_item.brand, new_item.name, new_item.price.to_s]
-    # if !read_database.drop(1).find { |record| record[1..3] == new_record[1..3] }
     write_to_database(new_item)
-    # end
     new_item
   end
 
@@ -73,7 +70,8 @@ class Udacidata
 
   def self.where(options = {})
     database = read_database.drop(1)
-    matching_records = database.find_all {|record| record[1] == options[:brand]}
+    matching_records = database.find_all {|record| record[1] == options[:brand]} if options[:brand]
+    matching_records = database.find_all {|record| record[2] == options[:name]} if options[:name]
     return matching_records.map! { |record| new_object(record) }
   end
 
