@@ -3,6 +3,7 @@ require_relative 'errors'
 require 'csv'
 
 class Udacidata
+  create_finder_methods :brand, :name
   def self.create(options = {})
     new_item = new(options)
     # new_record = [new_item.id.to_s, new_item.brand, new_item.name, new_item.price.to_s]
@@ -13,7 +14,7 @@ class Udacidata
   end
 
   def self.new_object(args)
-    new :id => args[0], :brand => args[1], :name => args[2], :price => args[3]
+    new :id => args[0].to_i, :brand => args[1], :name => args[2], :price => args[3].to_f
   end
 
   def self.read_database
@@ -66,4 +67,30 @@ class Udacidata
     end
     target
   end
+
+  # def self.find_by_brand(brand_name)
+  #   database = read_database.drop(1)
+  #   matching_record = database.find {|record| record[1] == brand_name}
+  #   new_object(matching_record)
+  # end
+
+  # def self.find_by_name(item_name)
+  #   database = read_database.drop(1)
+  #   matching_record = database.find {|record| record[2] == item_name}
+  #   new_object(matching_record)
+  # end
+
+  def self.where(options = {})
+    database = read_database.drop(1)
+    matching_records = database.find_all {|record| record[1] == options[:brand]}
+    return matching_records.map! { |record| new_object(record) }
+  end
 end
+
+# Udacidata.class_eval {
+#   def self.find_by_brand(brand_name)
+#     database = read_database.drop(1)
+#     matching_record = database.find {|record| record[1] == brand_name}
+#     new_object(matching_record)
+#   end
+# }
