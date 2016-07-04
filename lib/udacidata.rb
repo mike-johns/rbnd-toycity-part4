@@ -56,11 +56,14 @@ class Udacidata
     new_object(result)
   end
 
+  def self.object_to_array(object)
+    [object.id.to_s, object.brand, object.name, object.price.to_s]
+  end
+
   def self.destroy(id)
     database = read_database
     target = find(id)
-    target_as_array = [target.id.to_s, target.brand, target.name, target.price.to_s]
-    database.delete(target_as_array)
+    database.delete object_to_array(target)
     data_path = File.dirname(__FILE__) + "/../data/data.csv"
     CSV.open(data_path, "w") do |csv|
       database.each { |record| csv << record }
@@ -68,29 +71,19 @@ class Udacidata
     target
   end
 
-  # def self.find_by_brand(brand_name)
-  #   database = read_database.drop(1)
-  #   matching_record = database.find {|record| record[1] == brand_name}
-  #   new_object(matching_record)
-  # end
-
-  # def self.find_by_name(item_name)
-  #   database = read_database.drop(1)
-  #   matching_record = database.find {|record| record[2] == item_name}
-  #   new_object(matching_record)
-  # end
-
   def self.where(options = {})
     database = read_database.drop(1)
     matching_records = database.find_all {|record| record[1] == options[:brand]}
     return matching_records.map! { |record| new_object(record) }
   end
-end
 
-# Udacidata.class_eval {
-#   def self.find_by_brand(brand_name)
-#     database = read_database.drop(1)
-#     matching_record = database.find {|record| record[1] == brand_name}
-#     new_object(matching_record)
-#   end
-# }
+  def update(options = {})
+    parent = self.class
+    parent.destroy(self.id)
+    @brand = options[:brand] if options[:brand]
+    @name = options[:name] if options[:name]
+    @price = options[:price].to_f if options[:price]
+    self.class.write_to_database(self)
+    self
+  end
+end
