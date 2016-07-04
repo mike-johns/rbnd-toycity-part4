@@ -7,7 +7,7 @@ class Udacidata
     new_item = new(options)
     # new_record = [new_item.id.to_s, new_item.brand, new_item.name, new_item.price.to_s]
     # if !read_database.drop(1).find { |record| record[1..3] == new_record[1..3] }
-      write_to_database(new_item)
+    write_to_database(new_item)
     # end
     new_item
   end
@@ -53,5 +53,17 @@ class Udacidata
   def self.find(id)
     result = read_database.drop(1).find { |i| i[0] == id.to_s}
     new_object(result)
+  end
+
+  def self.destroy(id)
+    database = read_database
+    target = find(id)
+    target_as_array = [target.id.to_s, target.brand, target.name, target.price.to_s]
+    database.delete(target_as_array)
+    data_path = File.dirname(__FILE__) + "/../data/data.csv"
+    CSV.open(data_path, "w") do |csv|
+      database.each { |record| csv << record }
+    end
+    target
   end
 end
