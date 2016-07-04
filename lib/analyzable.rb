@@ -39,14 +39,28 @@ module Analyzable
   end
 
   def count_by_brand(product_array)
-    number_of_items = product_array.size
-    given_brand = product_array.first.brand
-    { given_brand => number_of_items }
+    brand_array = []
+    product_array.each { |item| brand_array << item.brand }
+    brand_array.uniq!
+    brand_hash = {}
+    brand_array.each do |brand|
+      brand_members = product_array.find_all { |i| i.brand == brand }
+      brand_hash[brand] = brand_members.size
+    end
+    brand_hash
   end
 
+
+
   def count_by_name(product_array)
-    number_of_items = product_array.size
-    given_name = product_array.first.name
-    { given_name => number_of_items }
+    name_array = []
+    product_array.each { |item| name_array << item.name }
+    name_array.uniq!
+    name_hash = {}
+    name_array.each do |name|
+      name_members = product_array.find_all { |i| i.name == name }
+      name_hash[name] = name_members.size
+    end
+    name_hash
   end
 end
