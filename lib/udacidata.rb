@@ -61,7 +61,6 @@ class Udacidata
   def self.destroy(id)
     database = read_database
     target = find(id)
-    # Note: this method meets error specs because ProductNotFoundError is raised from #find(id) above
     database.delete object_to_array(target)
     data_path = File.dirname(__FILE__) + "/../data/data.csv"
     CSV.open(data_path, "w") do |csv|
