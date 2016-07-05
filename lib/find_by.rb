@@ -4,7 +4,7 @@ class Module
       instance_eval %Q(
         def self.find_by_#{attribute}(search_term)
           database = read_database.drop(1)
-          matching_record = database.find { |record| Product.create({ :brand => record[1], :name => record[2] }).#{attribute} == search_term}
+          matching_record = database.find { |record| Product.new({ :brand => record[1], :name => record[2] }).#{attribute} == search_term}
           new_object(matching_record)
         end
         )
